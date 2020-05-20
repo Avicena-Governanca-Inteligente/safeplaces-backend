@@ -1,3 +1,4 @@
+require('dotenv/config');
 process.env.NODE_ENV = 'test';
 process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost/safeplaces_test';
 
