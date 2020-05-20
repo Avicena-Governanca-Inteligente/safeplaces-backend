@@ -1,4 +1,5 @@
 require('dotenv/config');
+
 const bcrypt = require('bcrypt');
 var express = require('express');
 const jwtSecret = require('../config/jwtConfig');
