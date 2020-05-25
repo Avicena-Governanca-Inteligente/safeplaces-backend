@@ -58,11 +58,20 @@ function deleteTable(){
   return Trails().del();
 }
 
+function getAllDevice(){
+  let time = new Date();
+  let back = 14;
+  time.setDate(time.getDate() - back) / 1000;
+
+  return Trails().select('redacted_trail_id').where('time', '>=', time);
+}
+
 module.exports = {
   find: find,
   findInterval: findInterval,
   getAll: getAll,
   getRedactedTrailFromRecord: getRedactedTrailFromRecord,
   insertRedactedTrailSet: insertRedactedTrailSet,
-  deleteTable: deleteTable
+  deleteTable: deleteTable,
+  getAllDevice: getAllDevice
 };

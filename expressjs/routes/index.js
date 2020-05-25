@@ -17,7 +17,6 @@ var users = require('../db/models/users');
 
 const LocalStrategy = require('passport-local').Strategy;
 
-
 // *** POST /login user *** //
 router.post('/login',	function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
@@ -262,6 +261,22 @@ router.post('/safe_paths',
       res.status(500).json({message: err});
     }); // publication
 });
+
+// *** Nossas rotas *** //
+
+// *** GET devices covid confirm - Retornar todos os ids de dispositivos que afirmaram estar com covid no intervalo de 15 dias
+router.get('/devices/covid_certificate',
+  passport.authenticate('jwt', { session: false }), async function(req, res) {
+  let devicesResponse = [];
+  const devices = await trails.getAllDevice();
+  
+  for(let i = 0; i < devices.length; i++) {
+    devicesResponse.push(devices[i].redacted_trail_id)
+  }
+  return res.json(devicesResponse);
+});
+
+// *** Fim nossas rotas *** //
 
 module.exports = router;
 
