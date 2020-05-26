@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 exports.seed = function(knex, Promise) {
   if (!process.env.SEED_MAPS_API_KEY){

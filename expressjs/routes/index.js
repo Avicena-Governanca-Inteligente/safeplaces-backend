@@ -1,6 +1,6 @@
 require('dotenv/config');
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 var express = require('express');
 const jwtSecret = require('../config/jwtConfig');
 const jwt = require('jsonwebtoken');
@@ -133,8 +133,8 @@ router.post('/redacted_trail',
           req.user.organization_id,
           req.user.id
         ).then((redactedTrailRecords) => {
-          if (Array.isArray(redactedTrailRecords)) {            
-              redactedTrailReturnData = {
+          if (Array.isArray(redactedTrailRecords)) {
+            redactedTrailReturnData = {
               data: formatRedactedTrailData(redactedTrailRecords),
               success: true
             };
@@ -274,10 +274,6 @@ router.get('/devices/covid_certificate',
     devicesResponse.push(devices[i].redacted_trail_id)
   }
   return res.json(devicesResponse);
-});
-
-router.get('/', function(req, res){
-  res.redirect('/health');
 });
 
 // *** Fim nossas rotas *** //
