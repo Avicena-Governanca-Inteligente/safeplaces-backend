@@ -1,6 +1,6 @@
 require('dotenv/config');
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 var express = require('express');
 const jwtSecret = require('../config/jwtConfig');
 const jwt = require('jsonwebtoken');
@@ -133,8 +133,9 @@ router.post('/redacted_trail',
           req.user.organization_id,
           req.user.id
         ).then((redactedTrailRecords) => {
-          if (Array.isArray(redactedTrailRecords)) {
-            redactedTrailReturnData = {
+          console.log("===> redactedTrailRecords: ",redactedTrailRecords )
+          if (Array.isArray(redactedTrailRecords)) {            
+              redactedTrailReturnData = {
               data: formatRedactedTrailData(redactedTrailRecords),
               success: true
             };
