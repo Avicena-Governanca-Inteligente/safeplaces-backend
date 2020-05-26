@@ -28,10 +28,16 @@ function getRedactedTrailFromRecord(trails){
   let redactedTrail = [];
   trails.forEach(element => {
     let trail = {};
-    const b = new Buffer.from(element.coordinates, 'hex');
-    const c = wkx.Geometry.parse(b);
-    trail.longitude = c.x;
-    trail.latitude = c.y;
+    if(element.coordinates == null){
+      trail.longitude = null;
+      trail.latitude = null;
+    }
+    else{
+      const b = new Buffer.from(element.coordinates, 'hex');
+      const c = wkx.Geometry.parse(b);
+      trail.longitude = c.x;
+      trail.latitude = c.y;
+    }    
     trail.time = element.time.getTime()/1000;
     identifier = element.redacted_trail_id;
     redactedTrail.push(trail);
@@ -43,8 +49,14 @@ function insertRedactedTrailSet(trails, redactedTrailId, organizationId, userId)
   let trailRecords = [];
   trails.forEach(element => {
     let trailRecord = {};
-    trailRecord.coordinates = st.setSRID(
-      st.makePoint(element.longitude, element.latitude), 4326);
+    console.log("===> ",element.longitude)
+    if(element.longitude == null && element.latitude == null){
+      trailRecord.coordinates = null;
+    }
+    else{
+      trailRecord.coordinates = st.setSRID(
+        st.makePoint(element.longitude, element.latitude), 4326);        
+      }
     trailRecord.time = new Date(element.time * 1000); // Assumes time in epoch seconds
     trailRecord.redacted_trail_id = redactedTrailId;
     trailRecord.organization_id = organizationId;
