@@ -133,7 +133,6 @@ router.post('/redacted_trail',
           req.user.organization_id,
           req.user.id
         ).then((redactedTrailRecords) => {
-          console.log("===> redactedTrailRecords: ",redactedTrailRecords )
           if (Array.isArray(redactedTrailRecords)) {            
               redactedTrailReturnData = {
               data: formatRedactedTrailData(redactedTrailRecords),

@@ -49,14 +49,13 @@ function insertRedactedTrailSet(trails, redactedTrailId, organizationId, userId)
   let trailRecords = [];
   trails.forEach(element => {
     let trailRecord = {};
-    console.log("===> ",element.longitude)
     if(element.longitude == null && element.latitude == null){
       trailRecord.coordinates = null;
     }
     else{
       trailRecord.coordinates = st.setSRID(
         st.makePoint(element.longitude, element.latitude), 4326);        
-      }
+    }
     trailRecord.time = new Date(element.time * 1000); // Assumes time in epoch seconds
     trailRecord.redacted_trail_id = redactedTrailId;
     trailRecord.organization_id = organizationId;
