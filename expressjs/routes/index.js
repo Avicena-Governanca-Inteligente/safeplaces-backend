@@ -133,7 +133,6 @@ router.post('/redacted_trail',
           req.user.organization_id,
           req.user.id
         ).then((redactedTrailRecords) => {
-          console.log("===> redactedTrailRecords: ",redactedTrailRecords )
           if (Array.isArray(redactedTrailRecords)) {            
               redactedTrailReturnData = {
               data: formatRedactedTrailData(redactedTrailRecords),
@@ -275,6 +274,10 @@ router.get('/devices/covid_certificate',
     devicesResponse.push(devices[i].redacted_trail_id)
   }
   return res.json(devicesResponse);
+});
+
+router.get('/', function(req, res){
+  res.redirect('/health');
 });
 
 // *** Fim nossas rotas *** //
