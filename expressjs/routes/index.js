@@ -15,6 +15,9 @@ var publications = require('../db/models/publications');
 var trails = require('../db/models/trails');
 var users = require('../db/models/users');
 
+var persons = require('../db/models/persons');
+var adresses = require('../db/models/adresses');
+
 const LocalStrategy = require('passport-local').Strategy;
 
 // *** POST /login user *** //
@@ -279,6 +282,47 @@ router.get('/devices/covid_certificate',
 router.get('/', function(req, res) {
   res.redirect('/health');
 })
+
+router.post('/register/person', 
+  passport.authenticate('jwt', { session: false }), async function(req, res) {
+    
+    let data_person = {}
+    data_person.nome = req.body.nome,
+    data_person.nome_mae = req.body.nome_mae,
+    data_person.telefone = req.body.telefone
+    console.log("===> ", data_person)   
+
+    persons.insertPerson(data_person).then((ListPerson) => {
+      let data_adresses = {}    
+      data_adresses.logradouro = req.body.logradouro,
+      data_adresses.numero = req.body.numero,
+      data_adresses.complemento = req.body.complemento,
+      data_adresses.bairro = req.body.bairro,
+      data_adresses.cidade = req.body.cidade,
+      data_adresses.uf = req.body.uf,
+      data_adresses.cep = req.body.cep
+      data_adresses.person_id = ListPerson.id;
+
+      console.log("===> ", data_adresses)
+    
+    adresses.insertAdresses(data_adresses).then((ListAdresse) => {
+      retornoDados = {
+        Person: ListPerson,
+        Adresse: ListAdresse
+      };
+      
+      res.status(200).json(retornoDados);
+
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json({message: 'Erro no cadastro de Endereço'});
+    });    
+
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json({message: 'Erro no cadastro de Pessoa'});
+    });
+  })
 
 // *** Fim nossas rotas *** //
 
