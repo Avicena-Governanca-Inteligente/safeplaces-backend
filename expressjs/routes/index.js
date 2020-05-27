@@ -287,12 +287,16 @@ router.post('/register/person',
   passport.authenticate('jwt', { session: false }), async function(req, res) {
     
     let data_person = {}
+    data_person.id,
     data_person.nome = req.body.nome,
     data_person.nome_mae = req.body.nome_mae,
     data_person.telefone = req.body.telefone
-    console.log("===> ", data_person)   
+    //console.log("===> ", data_person)   
+
+
 
     persons.insertPerson(data_person).then((ListPerson) => {
+      
       let data_adresses = {}    
       data_adresses.logradouro = req.body.logradouro,
       data_adresses.numero = req.body.numero,
@@ -301,14 +305,20 @@ router.post('/register/person',
       data_adresses.cidade = req.body.cidade,
       data_adresses.uf = req.body.uf,
       data_adresses.cep = req.body.cep
-      data_adresses.person_id = ListPerson.id;
+      data_adresses.person_id = ListPerson[0].id;
 
-      console.log("===> ", data_adresses)
+      //console.log("===> ", data_adresses)
     
-    adresses.insertAdresses(data_adresses).then((ListAdresse) => {
+    adresses.insertAdresses(data_adresses).then((ListAdresses) => {
+
       retornoDados = {
-        Person: ListPerson,
-        Adresse: ListAdresse
+        Person: {
+          id: ListPerson[0].id,
+          nome: ListPerson[0].nome,
+          nome_mae: ListPerson[0].nome_mae,
+          telefone: ListPerson[0].telefone,
+          Adresses: ListAdresses
+        }
       };
       
       res.status(200).json(retornoDados);
@@ -323,6 +333,12 @@ router.post('/register/person',
       res.status(500).json({message: 'Erro no cadastro de Pessoa'});
     });
   })
+
+
+router.get('/persons', (req, res) => {
+  res.status(200).json(persons.find());
+})
+
 
 // *** Fim nossas rotas *** //
 
