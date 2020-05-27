@@ -276,6 +276,10 @@ router.get('/devices/covid_certificate',
   return res.json(devicesResponse);
 });
 
+router.get('/', function(req, res) {
+  res.redirect('/health');
+})
+
 // *** Fim nossas rotas *** //
 
 module.exports = router;
